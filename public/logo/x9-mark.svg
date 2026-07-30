@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none" role="img" aria-label="X9 Creatives">
+  <!--
+    X9 Creatives mark — vector rebuild from Assets/Logo 1.jpeg.
+    DEV PLACEHOLDER: replace with the client's official vector artwork.
+
+    Single path, fill-rule nonzero. The two strokes share a winding direction so
+    they union; the notch subpath is wound in reverse so it subtracts, giving a
+    true hole that works on any background without a <mask> (and therefore
+    without needing a document-unique id).
+
+    Geometry: both strokes are 28.3u wide so the X reads balanced. The primary
+    runs corner to corner with chamfered terminals; the counter-stroke is cut
+    short and continued by two detached "pixel" squares sitting exactly on its
+    axis (y = -x + 120).
+  -->
+  <path
+    fill="currentColor"
+    d="M28 8 L112 92 L112 106 L106 112 L92 112 L8 28 L8 14 L14 8 Z
+       M30 36 L30 47 L50 47 L50 36 Z
+       M78 22 L98 42 L42 98 L22 78 Z
+       M96 10 L110 10 L110 24 L96 24 Z
+       M10 96 L24 96 L24 110 L10 110 Z"
+  />
+</svg>

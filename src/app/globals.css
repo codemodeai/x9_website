@@ -1,0 +1,146 @@
+@import "tailwindcss";
+@import "../../tokens/x9-tokens.css";
+
+/* ==========================================================================
+   Map X9 tokens into Tailwind v4's theme namespaces.
+
+   `@theme inline` emits utilities that reference the variable rather than
+   copying its value. That is what makes the [data-theme="light"] inversion
+   work: `bg-bg` compiles to `background-color: var(--bg)`, so it re-resolves
+   inside any subtree that overrides --bg.
+   ========================================================================== */
+@theme inline {
+  /* Raw brand palette — use sparingly; prefer the semantic tokens below. */
+  --color-ink: var(--x9-ink);
+  --color-bone: var(--x9-bone);
+  --color-volt: var(--x9-volt);
+  --color-graphite: var(--x9-graphite);
+  --color-blaze: var(--x9-blaze);
+  --color-volt-dim: var(--x9-volt-dim);
+  --color-blaze-dim: var(--x9-blaze-dim);
+  --color-ink-raised: var(--x9-ink-raised);
+
+  /* Semantic — theme-aware. These are the ones to reach for. */
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-text-subtle: var(--text-subtle);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-text: var(--accent-text);
+  --color-accent-2: var(--accent-2);
+  --color-accent-2-fg: var(--accent-2-fg);
+  --color-accent-2-hover: var(--accent-2-hover);
+  --color-accent-2-text: var(--accent-2-text);
+
+  /* Type */
+  --font-display: var(--x9-font-display);
+  --font-body: var(--x9-font-body);
+
+  --text-step-n1: var(--x9-step--1);
+  --text-step-0: var(--x9-step-0);
+  --text-step-1: var(--x9-step-1);
+  --text-step-2: var(--x9-step-2);
+  --text-step-3: var(--x9-step-3);
+  --text-step-4: var(--x9-step-4);
+  --text-step-5: var(--x9-step-5);
+  --text-step-6: var(--x9-step-6);
+  --text-step-7: var(--x9-step-7);
+
+  --tracking-eyebrow: var(--x9-tracking-eyebrow);
+  --leading-display: var(--x9-leading-display);
+  --leading-body: var(--x9-leading-body);
+
+  /* Motion */
+  --ease-x9: var(--x9-ease);
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--x9-font-body);
+    font-size: var(--x9-step-0);
+    line-height: var(--x9-leading-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--x9-font-display);
+    line-height: var(--x9-leading-display);
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background-color: var(--x9-volt);
+    color: var(--x9-ink);
+  }
+
+  /* Focus is never removed. Volt is 16.9:1 on Ink; on light it falls back to Ink. */
+  :where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+}
+
+/* ==========================================================================
+   Brand motifs — see docs/01-brand-design-system.md section 4
+   ========================================================================== */
+@utility x9-chamfer {
+  clip-path: polygon(
+    var(--x9-chamfer) 0,
+    100% 0,
+    100% calc(100% - var(--x9-chamfer)),
+    calc(100% - var(--x9-chamfer)) 100%,
+    0 100%,
+    0 var(--x9-chamfer)
+  );
+}
+
+@utility x9-chamfer-sm {
+  clip-path: polygon(
+    var(--x9-chamfer-sm) 0,
+    100% 0,
+    100% calc(100% - var(--x9-chamfer-sm)),
+    calc(100% - var(--x9-chamfer-sm)) 100%,
+    0 100%,
+    0 var(--x9-chamfer-sm)
+  );
+}
+
+@utility x9-measure {
+  max-width: var(--x9-measure);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
