@@ -253,6 +253,40 @@ service links gained vertical padding for a ~30px target without changing the vi
 The `/styleguide` palette tables still scroll horizontally inside their own container. That is
 by design — wide data tables scroll in place rather than making the page scroll.
 
+## Lead capture — live
+
+Contact form → server action → Supabase → `/admin`. Verified end to end with a real
+submission on 30 Jul 2026.
+
+```
+src/lib/leads.ts               deliverLead() + fetchLeads()
+src/lib/admin-auth.ts          password check, HMAC session token
+src/app/admin/                 login + guarded inbox
+supabase/migrations/0001_leads.sql
+```
+
+**Supabase project** `cvjiwgfjblhdzkfiplau` — a different account from the one the
+Supabase MCP is connected to, so DDL has to be run by hand in the SQL Editor; it cannot be
+applied from here.
+
+**RLS is the load-bearing part.** The `leads` table has RLS enabled and *no policies*, which
+denies everything subject to it. Verified directly: the service-role key reads rows, the
+publishable key gets `[]`. That matters because the publishable key is designed to be shipped
+to browsers — if it could read this table, anyone viewing source could download every
+enquiry. **Never add a policy granting `anon` select here.**
+
+Env vars set in Vercel (Production, Preview, Development): `SUPABASE_URL`,
+`SUPABASE_SERVICE_ROLE_KEY`, plus `ADMIN_PASSWORD` (set by the client, not stored here).
+
+### Outstanding
+
+- **Rotate `SUPABASE_SERVICE_ROLE_KEY`.** It was pasted into a chat transcript on 30 Jul.
+  Supabase → Settings → API → rotate, then update it in the Vercel dashboard and redeploy.
+- One test row from the client is in the table (`JAGADEESHWARAN B`). Left in place — theirs
+  to delete.
+- Optional `ADMIN_SESSION_SECRET` is unset, so session cookies are signed with the password.
+  Setting it means the password can change without logging everyone out, and vice versa.
+
 ## Carried forward
 
 - **Logo SVGs from the client still blocking.** `public/logo/x9-mark.svg` and the `X9Lockup`
