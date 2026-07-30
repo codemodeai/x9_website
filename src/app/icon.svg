@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <!--
+    Favicon — the X9 mark on a solid Ink plate.
+
+    The background is NOT optional and NOT transparent. Volt (#CCFF00) against a
+    white surface is 1.06:1, so a transparent favicon would disappear entirely on
+    a light browser tab or a light bookmarks bar. The Ink plate travels with the
+    mark and keeps it at 16.9:1 wherever the icon is drawn.
+
+    Geometry matches public/logo/x9-mark.svg — replace both together when the
+    client's official vector arrives.
+  -->
+  <rect width="120" height="120" fill="#0a0a0a" />
+  <path
+    fill="#ccff00"
+    d="M28 8 L112 92 L112 106 L106 112 L92 112 L8 28 L8 14 L14 8 Z
+       M30 36 L30 47 L50 47 L50 36 Z
+       M78 22 L98 42 L42 98 L22 78 Z
+       M96 10 L110 10 L110 24 L96 24 Z
+       M10 96 L24 96 L24 110 L10 110 Z"
+  />
+</svg>

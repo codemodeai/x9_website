@@ -54,3 +54,6 @@ next-env.d.ts
 
 # Internal planning document, not part of the site.
 X9_Creatives_Service_PRD_Detailed.docx
+
+.vercel
+.env*
