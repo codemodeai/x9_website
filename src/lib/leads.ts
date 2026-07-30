@@ -45,6 +45,42 @@ export type SinkResult =
   | { ok: true }
   | { ok: false; reason: "not-configured" | "failed" };
 
+export interface StoredLead extends Lead {
+  id: string;
+  created_at: string;
+}
+
+export type LeadsResult =
+  | { ok: true; leads: StoredLead[] }
+  | { ok: false; reason: "not-configured" | "failed"; detail?: string };
+
+export function leadsConfigured(): boolean {
+  return Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
+}
+
+/** Read submissions for the admin inbox, newest first. */
+export async function fetchLeads(limit = 200): Promise<LeadsResult> {
+  const url = process.env.SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !key) return { ok: false, reason: "not-configured" };
+
+  try {
+    const res = await fetch(
+      `${url}/rest/v1/leads?select=*&order=created_at.desc&limit=${limit}`,
+      {
+        headers: { apikey: key, Authorization: `Bearer ${key}` },
+        cache: "no-store",
+      },
+    );
+    if (!res.ok) {
+      return { ok: false, reason: "failed", detail: `${res.status} ${await res.text()}` };
+    }
+    return { ok: true, leads: (await res.json()) as StoredLead[] };
+  } catch (error) {
+    return { ok: false, reason: "failed", detail: String(error) };
+  }
+}
+
 export async function deliverLead(lead: Lead): Promise<SinkResult> {
   const url = process.env.SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;

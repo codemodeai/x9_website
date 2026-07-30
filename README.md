@@ -40,6 +40,36 @@ Content changes almost never need markup changes — edit the files in
 4. **Lead capture** — the contact form fails closed until `SUPABASE_URL` and
    `SUPABASE_SERVICE_ROLE_KEY` are set. Table DDL is in `src/lib/leads.ts`.
    It will never report success for an enquiry that went nowhere.
+
+## Lead inbox (`/admin`)
+
+Whoever books a call through the contact form shows up at **`/admin`**, newest
+first, with everything they submitted: name, email, company, services chosen,
+budget band, timeline and message.
+
+| Env var | Purpose |
+|---|---|
+| `ADMIN_PASSWORD` | Enables sign-in. **Unset = nobody can sign in** — it fails closed rather than defaulting open. |
+| `ADMIN_SESSION_SECRET` | Optional. Signs session cookies. Rotating it logs everyone out without changing the password. Falls back to `ADMIN_PASSWORD`. |
+| `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` | Where the leads are read from and written to. |
+
+Set the production password yourself so it never passes through a chat log or
+a file:
+
+```bash
+vercel env add ADMIN_PASSWORD production   # prompts for the value
+vercel deploy --prod
+```
+
+**Why it is password-gated rather than an unlisted URL:** the inbox holds other
+people's names, email addresses and messages. An unlisted URL is not access
+control — anyone sent the link, or any crawler that finds it, would have the
+lot. Sign-in exchanges the password for an HMAC-signed, httpOnly cookie that
+expires after 12 hours; tampered, expired and future-dated cookies are all
+rejected, and the password is compared in constant time.
+
+`/admin` is `noindex, nofollow` and is not linked from anywhere on the public
+site.
 5. **Client permissions** — portfolio names, logos and account screenshots
    belong to the clients. The Meta Ads screenshot shows campaign names and ad
    spend; get sign-off or redact those columns.

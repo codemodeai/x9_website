@@ -134,6 +134,15 @@
   max-width: var(--x9-measure);
 }
 
+/* The admin subtree renders its own header. Hide the public site chrome for it
+   instead of moving every public route into a group just to escape the root
+   layout — same result, much smaller change. */
+body:has([data-admin]) > header,
+body:has([data-admin]) > footer,
+body:has([data-admin]) > a[href="#main"] {
+  display: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
